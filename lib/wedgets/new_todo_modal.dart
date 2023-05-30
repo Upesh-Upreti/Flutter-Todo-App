@@ -20,7 +20,7 @@ class _NewTodoModalState extends State<NewTodoModal> {
           builder: (ctx) => AlertDialog(
                 backgroundColor: const Color.fromARGB(255, 211, 185, 184),
                 title: Text('Invalid Input'),
-                content: Text('Please make sure a valid was entered.'),
+                content: Text('Please make sure a valid task was entered.'),
                 actions: [
                   TextButton(
                     onPressed: () {
@@ -30,6 +30,8 @@ class _NewTodoModalState extends State<NewTodoModal> {
                   ),
                 ],
               ));
+
+      return;
     }
     widget.onAddTodo(
       ToDo(
@@ -38,6 +40,7 @@ class _NewTodoModalState extends State<NewTodoModal> {
         dueDate: DateTime.now(),
       ),
     );
+
     Navigator.pop(context);
   }
 

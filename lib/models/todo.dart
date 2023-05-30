@@ -7,10 +7,12 @@ class ToDo {
     required this.title,
     required this.createdDate,
     required this.dueDate,
-  }) : id = uuid.v4();
+  })  : id = uuid.v4(),
+        isDone = false;
 
   final String title;
   final String id;
   final DateTime createdDate;
   final DateTime dueDate;
+  bool isDone;
 }

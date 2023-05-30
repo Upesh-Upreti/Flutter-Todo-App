@@ -12,7 +12,6 @@ class ToDoItems extends StatefulWidget {
 class _ToDoItemsState extends State<ToDoItems> {
   _ToDoItemsState({required this.todo});
   final ToDo todo;
-  bool isChecked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +29,10 @@ class _ToDoItemsState extends State<ToDoItems> {
                   todo.title,
                   style: const TextStyle(fontSize: 18),
                 ),
-                value: isChecked,
+                value: todo.isDone,
                 onChanged: (bool? val) {
                   setState(() {
-                    isChecked = val!;
+                    todo.isDone = val!;
                   });
                 }),
           ],

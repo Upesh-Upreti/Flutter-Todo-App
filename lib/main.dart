@@ -8,3 +8,7 @@ void main() {
     ),
   );
 }
+//Bug fixes
+// Dismissable
+// isDone added 
+// bug on saving todo
