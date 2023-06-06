@@ -28,7 +28,7 @@ class _ToDoItemsState extends State<ToDoItems> {
             CheckboxListTile(
                 title: Text(
                   widget.todo.title,
-                  style: const TextStyle(fontSize: 18),
+                  style: const TextStyle(fontSize: 16),
                 ),
                 value: widget.todo.isDone,
                 onChanged: (bool? val) {
