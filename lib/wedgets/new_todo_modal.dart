@@ -19,14 +19,15 @@ class _NewTodoModalState extends State<NewTodoModal> {
           context: context,
           builder: (ctx) => AlertDialog(
                 backgroundColor: const Color.fromARGB(255, 211, 185, 184),
-                title: Text('Invalid Input'),
-                content: Text('Please make sure a valid task was entered.'),
+                title: const Text('Invalid Input'),
+                content:
+                    const Text('Please make sure a valid task was entered.'),
                 actions: [
                   TextButton(
                     onPressed: () {
                       Navigator.pop(ctx);
                     },
-                    child: Text("Sure"),
+                    child: const Text("Sure"),
                   ),
                 ],
               ));
@@ -38,6 +39,7 @@ class _NewTodoModalState extends State<NewTodoModal> {
         title: title,
         createdDate: DateTime.now(),
         dueDate: DateTime.now(),
+        isDone: false,
       ),
     );
 
@@ -75,19 +77,19 @@ class _NewTodoModalState extends State<NewTodoModal> {
             children: [
               ElevatedButton(
                 onPressed: addTodo,
-                child: Text('save task'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
                 ),
+                child: const Text('save task'),
               ),
               ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text('cancel'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red,
                 ),
+                child: const Text('cancel'),
               ),
             ],
           ),

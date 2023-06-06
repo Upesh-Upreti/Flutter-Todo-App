@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:todo/data/todo.dart' as todo_items;
+import 'package:hive/hive.dart';
+import 'package:todo/data/todo_database.dart';
+import 'package:todo/utils/constants.dart';
 import 'package:todo/wedgets/new_todo_modal.dart';
 import '../models/todo.dart';
 import '../wedgets/todo_list.dart';
@@ -12,12 +14,25 @@ class ToDoScreen extends StatefulWidget {
 }
 
 class _ToDoScreenState extends State<ToDoScreen> {
-  List<ToDo> todoItems = todo_items.todos;
+  final ToDoDatabase db = ToDoDatabase();
+  final Box todoBox = Hive.box(ToDoConstants.HIVE_BOX);
+
+  //As of now we are only using a key('todoItems) to store todo items
+  //Since we are using a list of class ToDo to store todos
+
+  //print(todoBox.get(ToDoConstants.HIVE_KEY));
+  @override
+  void initState() {
+    if (todoBox.get(ToDoConstants.HIVE_KEY) == null) db.createInitialItems();
+    db.loadItems();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     void addTodo(ToDo value) {
       setState(() {
-        todoItems.add(value);
+        db.addItem(value);
       });
     }
 
@@ -31,24 +46,28 @@ class _ToDoScreenState extends State<ToDoScreen> {
     }
 
     void removeTodo(ToDo todo) {
-      final indexTodo = todoItems.indexOf(todo);
+      final indexTodo = db.getIndex(todo);
       setState(() {
-        todoItems.remove(todo);
+        db.deleteItem(todo);
       });
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          duration: Duration(seconds: 3),
-          content: Text('Todo item deleted'),
+          duration: const Duration(seconds: 3),
+          content: const Text('Todo item deleted'),
           action: SnackBarAction(
               label: 'undo',
               onPressed: () {
                 setState(() {
-                  todoItems.insert(indexTodo, todo);
+                  db.insertBackItem(indexTodo, todo);
                 });
               }),
         ),
       );
+    }
+
+    void onDone(ToDo todo, bool isDone) {
+      db.onDone(todo, isDone);
     }
 
     Widget emptyContent = const Center(
@@ -96,10 +115,11 @@ class _ToDoScreenState extends State<ToDoScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
-                  child: todoItems.length > 0
+                  child: db.todoItems.isNotEmpty
                       ? ToDoList(
-                          todos: todoItems,
+                          todos: db.todoItems,
                           onRemoveTodo: removeTodo,
+                          onCheckDone: onDone,
                         )
                       : emptyContent)
             ],

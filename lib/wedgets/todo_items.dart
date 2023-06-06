@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:todo/models/todo.dart';
 
 class ToDoItems extends StatefulWidget {
-  const ToDoItems({super.key, required this.todo});
+  const ToDoItems({super.key, required this.todo, required this.onCheckDone});
   final ToDo todo;
+  final void Function(ToDo todo, bool isDone) onCheckDone;
 
   @override
-  State<ToDoItems> createState() => _ToDoItemsState(todo: todo);
+  State<ToDoItems> createState() => _ToDoItemsState();
 }
 
 class _ToDoItemsState extends State<ToDoItems> {
-  _ToDoItemsState({required this.todo});
-  final ToDo todo;
+  // _ToDoItemsState({required this.todo});
+  // final ToDo todo;
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +27,14 @@ class _ToDoItemsState extends State<ToDoItems> {
           children: [
             CheckboxListTile(
                 title: Text(
-                  todo.title,
+                  widget.todo.title,
                   style: const TextStyle(fontSize: 18),
                 ),
-                value: todo.isDone,
+                value: widget.todo.isDone,
                 onChanged: (bool? val) {
+                  widget.onCheckDone(widget.todo, val!);
                   setState(() {
-                    todo.isDone = val!;
+                    widget.todo.isDone = val;
                   });
                 }),
           ],
